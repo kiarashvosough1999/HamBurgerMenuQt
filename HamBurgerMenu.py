@@ -52,7 +52,7 @@ class HamBurgerMenu(QMainWindow):
         top_bar_toggle_button_vertical_holder_layout.setSpacing(0)
 
         q = QPushButton(" Menu", top_toggle_button_frame)
-        q.clicked.connect(self.animate1)
+        q.clicked.connect(lambda : self.toggleMenu(250, True))
         # q.isFlat = True
         q.setStyleSheet("QPushButton {\
         border: 0;\
@@ -78,8 +78,13 @@ class HamBurgerMenu(QMainWindow):
         self.mainPage_horizontalLayout.setSpacing(0)
 
         self.navigation_drawer_frame = QFrame(self.mainPage_frame)
+        self.navigation_drawer_frame.setMinimumSize(QSize(70, 0))
+        self.navigation_drawer_frame.setMaximumSize(QSize(77, 16777215))
+        # self.navigation_drawer_frame.setStyleSheet(u"background-color: rgb(35, 35, 35);")
+        self.navigation_drawer_frame.setFrameShape(QFrame.StyledPanel)
+        self.navigation_drawer_frame.setFrameShadow(QFrame.Raised)
         # self.navigation_drawer_frame.setSizePolicy(size)
-        self.navigation_drawer_frame.setMinimumWidth(77)
+        # self.navigation_drawer_frame.setMinimumWidth(77)
         # self.navigation_drawer_frame.setMaximumWidth(77)
         self.navigation_drawer_frame.setStyleSheet(u"background-color: rgb(100, 201, 35);")
 
@@ -106,11 +111,23 @@ class HamBurgerMenu(QMainWindow):
 
         self.show()
 
-    def animate1(self):
-        print("jjjj")
-        animation = QPropertyAnimation(self.navigation_drawer_frame, b"minimumWidth")
-        animation.setDuration(400)
-        animation.setStartValue(self.navigation_drawer_frame.width())
-        animation.setEndValue(100)
-        animation.setEasingCurve(QEasingCurve.InOutQuart)
-        animation.start()
+    def toggleMenu(self, maxWidth, enable):
+        if enable:
+
+            # GET WIDTH
+            width = self.navigation_drawer_frame.width()
+            maxExtend = maxWidth
+            standard = 77
+
+            # SET MAX WIDTH
+            if width == 77:
+                widthExtended = maxExtend
+            else:
+                widthExtended = standard
+            # ANIMATION
+            self.animation = QPropertyAnimation(self.navigation_drawer_frame, b"minimumWidth")
+            self.animation.setDuration(400)
+            self.animation.setStartValue(width)
+            self.animation.setEndValue(widthExtended)
+            self.animation.setEasingCurve(QEasingCurve.InOutQuart)
+            self.animation.start()
