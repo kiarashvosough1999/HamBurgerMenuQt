@@ -1,5 +1,5 @@
 from PyQt5.QtCore import Qt, QSize, QPropertyAnimation, QEasingCurve
-from PyQt5.QtGui import QPixmap, QIcon
+from PyQt5.QtGui import QPixmap, QIcon, QTransform
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QFrame, QMainWindow, QPushButton, QSizePolicy
 
 
@@ -17,8 +17,7 @@ class HamBurgerMenu(QMainWindow):
         self.splitter.setContentsMargins(0, 0, 0, 0)
         self.splitter.setSpacing(0)
 
-        self.top_bar_frame = QFrame(
-            self.centralwidget)  # act as adapter between back layer layout and new HBoxLayout on top bar
+        self.top_bar_frame = QFrame(self.centralwidget)  # act as adapter between back layer layout and new HBoxLayout on top bar
         self.top_bar_frame.setSizePolicy(size)
         self.top_bar_frame.setMaximumHeight(70)
         self.top_bar_frame.setFrameShape(QFrame.NoFrame)
@@ -59,7 +58,7 @@ class HamBurgerMenu(QMainWindow):
         margin: 5px;\
         padding: 5px;}")
 
-        p = QPixmap("hamburger-menu-10-782968.png")
+        p = QPixmap("hamburger-menu-10-782968.png").transformed(QTransform())
         q.setIcon(QIcon(p))
         q.setSizePolicy(size)
         top_bar_toggle_button_vertical_holder_layout.addWidget(q)
@@ -116,7 +115,7 @@ class HamBurgerMenu(QMainWindow):
 
             # GET WIDTH
             width = self.navigation_drawer_frame.width()
-            maxExtend = maxWidth
+            maxExtend = self.width()/3
             standard = 77
 
             # SET MAX WIDTH
@@ -125,6 +124,7 @@ class HamBurgerMenu(QMainWindow):
             else:
                 widthExtended = standard
             # ANIMATION
+
             self.animation = QPropertyAnimation(self.navigation_drawer_frame, b"minimumWidth")
             self.animation.setDuration(400)
             self.animation.setStartValue(width)
